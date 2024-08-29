@@ -1,0 +1,162 @@
+<<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drone Motor Selection and Calculations</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('drone-wallpaper-4k.jpg'); /* 4K drone wallpaper */
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            text-align: center;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px 0;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.7);
+            margin: 50px auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 900px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            color: #ffcc00;
+        }
+
+        input[type="number"], input[type="submit"] {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: none;
+            font-size: 1em;
+        }
+
+        input[type="number"] {
+            min: 0; /* Ensure only positive values */
+        }
+
+        input[type="submit"] {
+            background-color: #ffcc00;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #e6b800;
+        }
+
+        .output {
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 1.2em;
+        }
+
+        .content-section {
+            margin-top: 40px;
+        }
+
+        .content-section p, .content-section pre {
+            text-align: left;
+            color: #ccc;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Drone Motor Selection & Calculation Tool</h1>
+    </header>
+
+    <div class="container">
+        <h2>Calculate Motor KV Rating</h2>
+        <form id="motorCalculationForm">
+            <label for="weight">Enter Drone Weight (grams):</label>
+            <input type="number" id="weight" name="weight" min="0" required>
+
+            <label for="thrust">Enter Desired Thrust (grams):</label>
+            <input type="number" id="thrust" name="thrust" min="0" required>
+
+            <label for="batteryVoltage">Enter Battery Voltage (V):</label>
+            <input type="number" id="batteryVoltage" name="batteryVoltage" min="0" required>
+
+            <label for="propellerDiameter">Enter Propeller Diameter (inches):</label>
+            <input type="number" id="propellerDiameter" name="propellerDiameter" min="0" required>
+
+            <input type="submit" value="Calculate KV Rating">
+        </form>
+
+        <div id="output" class="output"></div>
+
+        <div class="content-section">
+            <h2>Understanding the Motor Selection Process</h2>
+            <p>The motor KV rating is a critical factor in determining the performance of your drone. KV rating refers to the number of revolutions per minute (RPM) per volt applied to the motor. To select the right motor, you need to consider the drone's weight, the thrust required, and the battery voltage.</p>
+
+            <h3>1. Motor Dimensions</h3>
+            <p>When choosing a motor, you need to ensure it fits within the physical constraints of your drone frame. The motor should also have sufficient torque to drive the propellers effectively.</p>
+
+            <h3>2. Drone Weight Calculations</h3>
+            <p>The weight of your drone, including the frame, motors, electronics, and battery, should be calculated accurately. For a carbon fiber frame, the weight can be calculated based on the dimensions and density of the material.</p>
+
+            <h3>3. Formulas Used</h3>
+            <p>To calculate the required KV rating, the following formula is used:</p>
+            <pre><code>KV = (Thrust / (Propeller Diameter * Battery Voltage))</code></pre>
+            <p>This formula provides a general estimation and may need adjustments based on other factors such as efficiency and aerodynamic drag.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 Drone Design & Calculation Tool. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('motorCalculationForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Get form values
+            const weight = document.getElementById('weight').value;
+            const thrust = document.getElementById('thrust').value;
+            const batteryVoltage = document.getElementById('batteryVoltage').value;
+            const propellerDiameter = document.getElementById('propellerDiameter').value;
+
+            // Calculate KV rating using a simplified formula
+            const kvRating = (thrust / (propellerDiameter * batteryVoltage)).toFixed(2);
+
+            // Display the result
+            document.getElementById('output').innerHTML = `<h3>Calculated Motor KV Rating:</h3><p>${kvRating} KV</p>`;
+        });
+    </script>
+</body>
+
+</html>
+

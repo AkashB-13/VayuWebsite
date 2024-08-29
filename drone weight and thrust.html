@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drone Weight and Thrust Calculator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://images.unsplash.com/photo-1550894130-9b8d4e4a7fd3'); /* Replace with your preferred image URL */
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            text-align: center;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px 0;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.8);
+            margin: 50px auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 900px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            color: #ffcc00;
+        }
+
+        input[type="number"], input[type="submit"] {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: none;
+            font-size: 1em;
+        }
+
+        input[type="number"] {
+            min: 0; /* Ensure only positive values */
+        }
+
+        input[type="submit"] {
+            background-color: #ffcc00;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #e6b800;
+        }
+
+        .output {
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 1.2em;
+        }
+
+        .content-section {
+            margin-top: 40px;
+        }
+
+        .content-section p {
+            text-align: left;
+            color: #ccc;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Drone Weight & Thrust Calculator</h1>
+    </header>
+
+    <div class="container">
+        <h2>Calculate Drone Weight</h2>
+        <form id="weightCalculationForm">
+            <label for="length">Enter Frame Length (cm):</label>
+            <input type="number" id="length" name="length" min="0" required>
+
+            <label for="width">Enter Frame Width (cm):</label>
+            <input type="number" id="width" name="width" min="0" required>
+
+            <label for="height">Enter Frame Height (cm):</label>
+            <input type="number" id="height" name="height" min="0" required>
+
+            <label for="density">Enter Carbon Fiber Density (g/cm³):</label>
+            <input type="number" id="density" name="density" value="1.6" step="0.01" min="0" required>
+
+            <input type="submit" value="Calculate Weight">
+        </form>
+
+        <div id="weightOutput" class="output"></div>
+
+        <h2>Calculate Required Thrust</h2>
+        <form id="thrustCalculationForm">
+            <label for="totalWeight">Enter Total Drone Weight (grams):</label>
+            <input type="number" id="totalWeight" name="totalWeight" min="0" required>
+
+            <label for="thrustRatio">Enter Thrust-to-Weight Ratio (Recommended: 2):</label>
+            <input type="number" id="thrustRatio" name="thrustRatio" value="2" step="0.1" min="0" required>
+
+            <input type="submit" value="Calculate Thrust">
+        </form>
+
+        <div id="thrustOutput" class="output"></div>
+
+        <div class="content-section">
+            <h2>Understanding the Calculations</h2>
+            <p>The weight of a drone is calculated based on the dimensions of the carbon fiber frame and its density. Once the weight is known, the required thrust can be calculated using the thrust-to-weight ratio, which is a critical factor in ensuring that the drone can lift off and maneuver effectively.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 Drone Design & Calculation Tool. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Weight Calculation
+        document.getElementById('weightCalculationForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const length = document.getElementById('length').value;
+            const width = document.getElementById('width').value;
+            const height = document.getElementById('height').value;
+            const density = document.getElementById('density').value;
+
+            const volume = length * width * height; // Volume in cubic cm
+            const weight = (volume * density).toFixed(2); // Weight in grams
+
+            document.getElementById('weightOutput').innerHTML = `<h3>Calculated Drone Weight:</h3><p>${weight} grams</p>`;
+        });
+
+        // Thrust Calculation
+        document.getElementById('thrustCalculationForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const totalWeight = document.getElementById('totalWeight').value;
+            const thrustRatio = document.getElementById('thrustRatio').value;
+
+            const requiredThrust = (totalWeight * thrustRatio).toFixed(2); // Total thrust in grams
+
+            document.getElementById('thrustOutput').innerHTML = `<h3>Required Thrust:</h3><p>${requiredThrust} grams</p>`;
+        });
+    </script>
+</body>
+
+</html>

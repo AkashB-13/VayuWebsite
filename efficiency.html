@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drone Efficiency Calculator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #00C9FF, #92FE9D);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .btn {
+            background-color: #00C9FF;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #007bbf;
+        }
+
+        .result {
+            margin-top: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .good {
+            color: green;
+        }
+
+        .bad {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Drone Efficiency Calculator</h1>
+        <form id="droneForm">
+            <div class="form-group">
+                <label for="batteryLife">Battery Life (in hours):</label>
+                <input type="number" id="batteryLife" name="batteryLife" step="0.1" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="flightRange">Flight Range (in km):</label>
+                <input type="number" id="flightRange" name="flightRange" step="0.1" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="payloadCapacity">Payload Capacity (in kg):</label>
+                <input type="number" id="payloadCapacity" name="payloadCapacity" step="0.1" min="0" required>
+            </div>
+            <button type="submit" class="btn">Calculate Efficiency</button>
+        </form>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('droneForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const batteryLife = parseFloat(document.getElementById('batteryLife').value);
+            const flightRange = parseFloat(document.getElementById('flightRange').value);
+            const payloadCapacity = parseFloat(document.getElementById('payloadCapacity').value);
+
+            const efficiency = (flightRange * payloadCapacity) / batteryLife;
+            const efficiencyPercentage = (efficiency / 20) * 100;
+
+            let resultText = '';
+            let resultClass = '';
+
+            if (efficiency > 20) {
+                resultText = `The drone is efficient and suitable for use! Efficiency: ${efficiencyPercentage.toFixed(2)}%`;
+                resultClass = 'good';
+            } else {
+                resultText = `The drone is not efficient enough for use. Efficiency: ${efficiencyPercentage.toFixed(2)}%`;
+                resultClass = 'bad';
+            }
+
+            const resultElement = document.getElementById('result');
+            resultElement.textContent = resultText;
+            resultElement.className = 'result ' + resultClass;
+        });
+    </script>
+
+</body>
+</html>
+
+

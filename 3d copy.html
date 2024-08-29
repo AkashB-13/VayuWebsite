@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drone Expression Calculator - Vayu Putra Drone Society</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+            text-align: center;
+            overflow-x: hidden;
+            background-color: #fff;
+        }
+
+        /* Video Background */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            filter: brightness(0.5);
+        }
+
+        /* Overlay for better text visibility */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        header {
+            position: relative;
+            padding: 80px 20px;
+            z-index: 2;
+            color: #fff;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 4.5em;
+            text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.9);
+        }
+
+        header p {
+            font-weight: 300;
+            font-size: 1.8em;
+            margin-top: 10px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        .header-subtitle {
+            font-size: 2em;
+            margin-top: 10px;
+            color: #fff;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        .header-nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px 20px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 2;
+        }
+
+        .header-nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.5em;
+            margin-left: 20px;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+
+        .header-nav a:hover {
+            color: #fff;
+            text-shadow: 0 0 10px #e6b800;
+        }
+
+        .container {
+            position: relative;
+            margin: 50px auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 1200px;
+            z-index: 2;
+        }
+
+        .section {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(15px);
+        }
+
+        .section h2 {
+            font-size: 2.5em;
+            color: #000;
+            margin-bottom: 20px;
+        }
+
+        .section p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+
+        .tool-box {
+            background-color: rgba(30, 144, 255, 0.2);
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tool-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px rgba(30, 144, 255, 0.8);
+        }
+
+        .tool-box a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.5em;
+            font-weight: 600;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+
+        .tool-box a:hover {
+            color: #fff;
+            text-shadow: 0 0 10px #e6b800;
+        }
+
+        .recommendation {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            text-align: left;
+        }
+
+        .recommendation h3 {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .percentage {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .contact-details {
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        .contact-details p {
+            margin: 10px 0;
+        }
+
+        .contact-details a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+
+        .contact-details a:hover {
+            color: #fff;
+            text-shadow: 0 0 10px #e6b800;
+        }
+
+        .comment-form {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            text-align: left;
+        }
+
+        .comment-form h3 {
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .comment-form label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 1em;
+        }
+
+        .comment-form button {
+            background-color: #ffcc00;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            color: #000;
+            transition: background-color 0.3s;
+        }
+
+        .comment-form button:hover {
+            background-color: #e6b800;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            font-size: 0.9em;
+            font-weight: 300;
+        }
+
+        .icon-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .icon-container a {
+            background-color: #e6b800;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px;
+            font-size: 1.5em;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .icon-container a:hover {
+            background-color: #e6b800;
+            transform: scale(1.1);
+        }
+
+        .about-us {
+            position: relative;
+            margin: 50px auto;
+            padding: 30px;
+            width: 80%;
+            max-width: 900px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(15px);
+            color: #fff;
+            text-align: left;
+            font-size: 1.2em;
+        }
+
+        /* Hide calculator sections initially */
+        #calculation1,
+        #calculation2,
+        #calculation3 {
+            display: none;
+        }
+
+        .calculator-section {
+            background-color: rgba(0, 0, 0, 0);
+            margin: 20px auto;
+            padding: 20px;
+            width: 100%;
+				
+            max-width: 900px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0);
+            text-align: left;
+        }
+
+        .calculator-section h2 {
+            color: #ffcc00;
+            margin-bottom: 20px;
+        }
+
+        .calculator-section label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #ffcc00;
+        }
+
+        .calculator-section input[type="number"],
+        .calculator-section input[type="submit"],
+        .calculator-section button {
+            padding: 10px;
+            margin-bottom: 15px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: none;
+            font-size: 1em;
+        }
+
+        .calculator-section input[type="number"] {
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #555;
+        }
+
+        .calculator-section input[type="submit"],
+        .calculator-section button {
+            background-color: #ffcc00;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: 600;
+        }
+
+        .calculator-section input[type="submit"]:hover,
+        .calculator-section button:hover {
+            background-color: #e6b800;
+        }
+
+        .calculator-section .output {
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            color: #ffcc00;
+        }
+
+        .content-section {
+            margin-top: 40px;
+        }
+
+        .content-section p,
+        .content-section pre {
+            text-align: left;
+            color: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <video autoplay muted loop class="video-background">
+        <source src="city-town-aerial.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="overlay"></div>
+
+    <header>
+        <h1>Drone Expression Calculator</h1>
+        <p>Vayu Putra Drone Society</p>
+        <p class="header-subtitle">PSG Institute of Technology and Applied Research</p>
+        <div class="header-nav">
+            <a href="#about">About Us</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="about-us" id="about">
+            <h2>About Us</h2>
+            <p>The "Vayu Putra Drone Society" at PSG iTech is a student-led organization focused on the design, development, and application of drone technology. Named "Vayu Putra," which translates to "Son of the Wind" in Sanskrit, the society embodies the spirit of innovation and technical excellence in the field of aerial robotics.Here you can calculate all the required professional calculations for a drone.</p>
+            </p> FLY WITH US!</p>
+        </div>
+
+        <!-- Calculation Boxes -->
+        <div class="tool-box" onclick="showCalculation('calculation1')">
+            <a href="#calculation1">Drone Weight & Thrust Calculator</a>
+        </div>
+        <div class="tool-box" onclick="showCalculation('calculation2')">
+            <a href="#calculation2">Drone Efficiency Calculator</a>
+        </div>
+        <div class="tool-box" onclick="showCalculation('calculation3')">
+            <a href="#calculation3">Drone Motor Selection & Calculation Tool</a>
+        </div>
+
+        <!-- Calculation 1 Section -->
+        <div id="calculation1" class="calculator-section">
+            <h2>Drone Weight & Thrust Calculator</h2>
+            <form id="weightCalculationForm">
+                <label for="length">Enter Frame Length (cm):</label>
+                <input type="number" id="length" name="length" min="0" max="1500" required>
+
+                <label for="width">Enter Frame Width (cm):</label>
+                <input type="number" id="width" name="width" min="0" max="1500" required>
+
+                <label for="height">Enter Frame Height (cm):</label>
+                <input type="number" id="height" name="height" min="0" max="1500" required>
+
+                <label for="density">Enter Carbon Fiber Density (g/cm³):</label>
+                <input type="number" id="density" name="density" value="1.6" step="0.01" min="0" required>
+
+                <input type="submit" value="Calculate Weight">
+            </form>
+
+            <div id="weightOutput" class="output"></div>
+
+            <h2>Calculate Required Thrust</h2>
+            <form id="thrustCalculationForm">
+                <label for="totalWeight">Enter Total Drone Weight (grams):</label>
+                <input type="number" id="totalWeight" name="totalWeight" min="0" max="15000" required>
+
+                <label for="thrustRatio">Enter Thrust-to-Weight Ratio (Recommended: 2):</label>
+                <input type="number" id="thrustRatio" name="thrustRatio" value="2" step="0.1" min="0" max="200" required>
+
+                <input type="submit" value="Calculate Thrust">
+            </form>
+
+            <div id="thrustOutput" class="output"></div>
+        </div>
+
+        <!-- Calculation 2 Section -->
+        <div id="calculation2" class="calculator-section">
+            <h2>Drone Efficiency Calculator</h2>
+            <form id="droneForm">
+                <label for="batteryLife">Battery Life (in hours):</label>
+                <input type="number" id="batteryLife" name="batteryLife" step="0.1" min="0" max="1500" required>
+
+                <label for="flightRange">Flight Range (in km):</label>
+                <input type="number" id="flightRange" name="flightRange" step="0.1" min="0" max="1500" required>
+
+                <label for="payloadCapacity">Payload Capacity (in kg):</label>
+                <input type="number" id="payloadCapacity" name="payloadCapacity" step="0.1" min="0" max="1500" required>
+
+                <button type="submit">Calculate Efficiency</button>
+            </form>
+            <div id="result" class="output"></div>
+        </div>
+
+        <!-- Calculation 3 Section -->
+        <div id="calculation3" class="calculator-section">
+            <h2>Drone Motor Selection & Calculation Tool</h2>
+            <form id="motorCalculationForm">
+                <label for="weight">Enter Drone Weight (grams):</label>
+                <input type="number" id="weight" name="weight" min="0" max="15000" required>
+
+                <label for="thrust">Enter Desired Thrust (grams):</label>
+                <input type="number" id="thrust" name="thrust" min="0" max="15000" required>
+
+                <label for="batteryVoltage">Enter Battery Voltage (V):</label>
+                <input type="number" id="batteryVoltage" name="batteryVoltage" min="0" max="1500" required>
+
+                <label for="propellerDiameter">Enter Propeller Diameter (inches):</label>
+                <input type="number" id="propellerDiameter" name="propellerDiameter" min="0" max="1500" required>
+
+                <input type="submit" value="Calculate KV Rating">
+            </form>
+
+            <div id="output" class="output"></div>
+
+            <div class="content-section">
+                <h2>Understanding the Motor Selection Process</h2>
+                <p>The motor KV rating is a critical factor in determining the performance of your drone. KV rating refers to the number of revolutions per minute (RPM) per volt applied to the motor. To select the right motor, you need to consider the drone's weight, the thrust required, and the battery voltage.</p>
+
+                <h3>1. Motor Dimensions</h3>
+                <p>When choosing a motor, you need to ensure it fits within the physical constraints of your drone frame. The motor should also have sufficient torque to drive the propellers effectively.</p>
+
+                <h3>2. Drone Weight Calculations</h3>
+                <p>The weight of your drone, including the frame, motors, electronics, and battery, should be calculated accurately. For a carbon fiber frame, the weight can be calculated based on the dimensions and density of the material.</p>
+
+                <h3>3. Formulas Used</h3>
+                <p>To calculate the required KV rating, the following formula is used:</p>
+                <pre><code>KV = (Thrust / (Propeller Diameter * Battery Voltage))</code></pre>
+                <p>This formula provides a general estimation and may need adjustments based on other factors such as efficiency and aerodynamic drag.</p>
+                </section>
+
+     
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+          <section class="contact-section">
+            <h3>Contact Us</h3>
+            <p>Email: contact@vayututorsociety.com</p>
+            <p>Phone: +1-234-567-890</p>
+            <p>Address: 123 Sky Lane, Drone City, Country</p>
+
+            <div class="social-media-icons">
+                <a href="https://www.instagram.com" target="_blank">Instagram</a>
+                <a href="https://www.facebook.com" target="_blank">Facebook</a>
+                <a href="https://www.linkedin.com" target="_blank">LinkedIn</a>
+            </div>
+        <p>&copy; 2024 Vayu Putra Drone Society. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function showCalculation(calculationId) {
+            document.getElementById('calculation1').style.display = 'none';
+            document.getElementById('calculation2').style.display = 'none';
+            document.getElementById('calculation3').style.display = 'none';
+
+            document.getElementById(calculationId).style.display = 'block';
+        }
+
+        // Weight Calculation
+        document.getElementById('weightCalculationForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const length = document.getElementById('length').value;
+            const width = document.getElementById('width').value;
+            const height = document.getElementById('height').value;
+            const density = document.getElementById('density').value;
+
+            const volume = length * width * height; // Volume in cubic cm
+            const weight = (volume * density).toFixed(2); // Weight in grams
+
+            document.getElementById('weightOutput').innerHTML = `<h3>Calculated Drone Weight:</h3><p>${weight} grams</p>`;
+        });
+
+        // Thrust Calculation
+        document.getElementById('thrustCalculationForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const totalWeight = document.getElementById('totalWeight').value;
+            const thrustRatio = document.getElementById('thrustRatio').value;
+
+            const requiredThrust = (totalWeight * thrustRatio).toFixed(2); // Total thrust in grams
+
+            document.getElementById('thrustOutput').innerHTML = `<h3>Required Thrust:</h3><p>${requiredThrust} grams</p>`;
+        });
+
+        // Efficiency Calculation
+               document.getElementById('droneForm').addEventListener('submit', function (event) {
+               event.preventDefault();
+
+               const batteryLife = parseFloat(document.getElementById('batteryLife').value);
+               const flightRange = parseFloat(document.getElementById('flightRange').value);
+               const payloadCapacity = parseFloat(document.getElementById('payloadCapacity').value);
+
+               const efficiency = (flightRange * payloadCapacity) / batteryLife;
+               const efficiencyPercentage = (efficiency / 20) * 100;
+               const efficiencies = efficiency; // Use const or let instead of Var
+
+               let resultText = '';
+               let resultClass = '';
+
+               if (efficiency > 20) {
+                 resultText = `The drone is efficient and suitable for use! Efficiency: ${efficiencyPercentage.toFixed(2)}%`;
+                 resultClass = 'good';
+                 }            
+              else {
+                 resultText = `The drone is not efficient enough for use. Efficiency: ${efficiencyPercentage.toFixed(2)}%`;
+                resultClass = 'bad';
+    }
+
+                const resultElement = document.getElementById('result');
+                resultElement.textContent = resultText;
+                resultElement.className = 'output ' + resultClass;
+     
+
+     
+
+        });
+
+        // Motor KV Rating Calculation
+        document.getElementById('motorCalculationForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Get form values
+            const weight = document.getElementById('weight').value;
+            const thrust = document.getElementById('thrust').value;
+            const batteryVoltage = document.getElementById('batteryVoltage').value;
+            const propellerDiameter = document.getElementById('propellerDiameter').value;
+
+            // Calculate KV rating using a simplified formula
+            const kvRating = (thrust / (propellerDiameter * batteryVoltage)).toFixed(2);
+
+            // Display the result
+            document.getElementById('output').innerHTML = `<h3>Calculated Motor KV Rating:</h3><p>${kvRating} KV</p>`;
+        });
+    </script>
+</body>
+
+</html>
